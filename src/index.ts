@@ -126,8 +126,17 @@ export const ValidateEnv = (options?: PluginOptions): Plugin => {
     name: 'vite-plugin-validate-env',
     config: async ({ envDir, envPrefix, root }, { mode }) => {
       const env = await validateEnv(ui, { envDir, envPrefix, root, mode }, options)
+
+      let overrideDefine: ((key: string, value: any) => string) | undefined
+      if (options && 'overrideDefine' in options) {
+        overrideDefine = options.overrideDefine
+      }
+
       const define = Object.fromEntries(
-        env.map(({ key, value }) => [`import.meta.env.${key}`, JSON.stringify(value)]),
+        env.map(({ key, value }) => [
+          `import.meta.env.${key}`,
+          overrideDefine ? overrideDefine(key, value) : JSON.stringify(value),
+        ]),
       )
 
       return { define }

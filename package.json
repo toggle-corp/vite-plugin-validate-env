@@ -38,6 +38,7 @@
     "dev": "tsup",
     "lint": "eslint .",
     "format": "prettier --write .",
+    "prepare": "tsup",
     "prepublishOnly": "pnpm build",
     "release": "bumpp --commit --push --tag && pnpm publish",
     "dev:playground": "pnpm vite -c playground/vite.config.ts",

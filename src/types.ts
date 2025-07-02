@@ -17,7 +17,11 @@ export type PluginOptions = Schema | FullPluginOptions
 export type FullPluginOptions = (
   | { validator: 'builtin'; schema: PoppinsSchema }
   | { validator: 'standard'; schema: StandardSchema }
-) & { debug?: boolean; configFile?: string }
+) & {
+  debug?: boolean
+  configFile?: string
+  overrideDefine?: (key: string, value: any) => string
+}
 
 export type PoppinsSchema = RecordViteKeys<ValidateFn<any>>
 export type StandardSchema = RecordViteKeys<StandardSchemaV1>
