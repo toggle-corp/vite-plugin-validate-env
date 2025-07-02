@@ -95,7 +95,7 @@ async function validateEnv(ui: UI, config: ConfigOptions, inlineOptions?: Plugin
   const options = await loadOptions(rootDir, inlineOptions)
   const variables = await validateAndLog(ui, env, options)
 
-  return variables
+  return [variables, options] as const
 }
 
 async function validateAndLog(ui: UI, env: Record<string, string>, options: PluginOptions) {
@@ -129,11 +129,11 @@ export const ValidateEnv = (options?: PluginOptions): Plugin => {
     ui: process.env.NODE_ENV === 'testing' ? ui : undefined,
     name: 'vite-plugin-validate-env',
     config: async ({ envDir, envPrefix, root }, { mode }) => {
-      const env = await validateEnv(ui, { envDir, envPrefix, root, mode }, options)
+      const [env, opts] = await validateEnv(ui, { envDir, envPrefix, root, mode }, options)
 
       let overrideDefine: ((key: string, value: any) => string) | undefined
-      if (options && 'overrideDefine' in options) {
-        overrideDefine = options.overrideDefine
+      if (opts && 'overrideDefine' in opts) {
+        overrideDefine = opts.overrideDefine
       }
 
       const define = Object.fromEntries(
@@ -154,7 +154,7 @@ export const ValidateEnv = (options?: PluginOptions): Plugin => {
  */
 export const loadAndValidateEnv = async (config: ConfigOptions, options?: PluginOptions) => {
   const ui = initUi()
-  const variables = await validateEnv(ui, config, options)
+  const [variables] = await validateEnv(ui, config, options)
 
   for (const { key, value } of variables) {
     process.env[key] = value
