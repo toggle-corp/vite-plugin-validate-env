@@ -11,14 +11,18 @@ import type { ConfigOptions, FullPluginOptions, PluginOptions, Schema } from './
 /**
  * Load schema defined in `env.ts` file using unconfig
  */
-async function loadOptions(rootDir: string, inlineConfig?: PluginOptions) {
+async function loadOptions(rootDir: string, inlineConfigOriginal?: PluginOptions) {
   let source = 'env'
+  const inlineConfig: PluginOptions | undefined = inlineConfigOriginal
+    ? { ...inlineConfigOriginal }
+    : undefined
 
   /**
    * If configFile is defined in the inlineConfig, use it as the source
    */
   if (inlineConfig && 'configFile' in inlineConfig && inlineConfig.configFile) {
     source = inlineConfig.configFile
+    delete inlineConfig['configFile']
   }
 
   const loader = createLoader<PluginOptions>({
