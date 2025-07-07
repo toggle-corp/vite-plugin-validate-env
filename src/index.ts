@@ -167,3 +167,19 @@ export const defineConfig = <T extends PluginOptions>(config: T): T => config
 
 export { schema as Schema } from '@poppinss/validator-lite'
 export type { ImportMetaEnvAugmented } from './types.js'
+
+/**
+ * Preset overrideDefine function for building for web-app-serve
+ * https://github.com/toggle-corp/web-app-serve
+ */
+export function overrideDefineForWebAppServe(key: string, value: any) {
+  // Override: Skip defining env variables if web app serve is enabled
+  if (value === null || value === undefined) {
+    // NOTE: value should always be defined during build
+    throw `Value for ${key} should not be null or undefined`
+  }
+  const replacementStr = `WEB_APP_SERVE_PLACEHOLDER__${key}`
+  // NOTE: For string values, we need to stringify 'replacementStr'
+  // This adds double quotes around the replacement string
+  return typeof value === 'string' ? JSON.stringify(replacementStr) : replacementStr
+}
