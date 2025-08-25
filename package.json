@@ -1,12 +1,14 @@
 {
-  "name": "@julr/vite-plugin-validate-env",
+  "name": "@togglecorp/vite-plugin-validate-env",
   "type": "module",
-  "version": "2.2.0",
+  "version": "2.2.1",
   "packageManager": "pnpm@10.12.4",
   "description": "✅ Vite plugin for validating your environment variables",
   "author": "Julien Ripouteau <julien@ripouteau.com>",
   "license": "MIT",
-  "funding": "https://github.com/sponsors/Julien-R44",
+  "funding": {
+    "url": "https://github.com/sponsors/Julien-R44"
+  },
   "homepage": "https://github.com/Julien-R44/vite-plugin-validate-env#readme",
   "repository": {
     "type": "git",
@@ -75,5 +77,9 @@
     "vite": "^7.0.1",
     "zod": "^3.25.71"
   },
-  "prettier": "@julr/tooling-configs/prettier"
+  "prettier": "@julr/tooling-configs/prettier",
+  "directories": {
+    "test": "tests"
+  },
+  "types": "./dist/index.d.ts"
 }
